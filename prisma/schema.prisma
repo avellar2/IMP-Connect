@@ -13,3 +13,180 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// Enums
+enum UserRole {
+  ADMIN
+  MUSICIAN
+  VISITOR
+}
+
+enum ServiceType {
+  MORNING
+  EVENING
+  SPECIAL
+}
+
+enum ConfirmationStatus {
+  PENDING
+  CONFIRMED
+  DECLINED
+}
+
+enum ScaleStatus {
+  DRAFT
+  CONFIRMED
+  COMPLETED
+}
+
+// Models
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String
+  role        UserRole @default(MUSICIAN)
+  instruments String[] // Array de instrumentos que toca
+  avatar      String?
+  phone       String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  scaleParticipations ScaleParticipant[]
+  createdScales       Scale[]            @relation("ScaleCreator")
+  favorites          UserFavorite[]
+
+  @@map("users")
+}
+
+model Song {
+  id             String   @id @default(cuid())
+  title          String
+  artist         String
+  originalKey    String   // Tom original
+  lyrics         String?  // Letra da música
+  chords         String?  // Cifras
+  tags           String[] // Tags para categorização
+  audioUrl       String?  // URL do áudio
+  backingTrackUrl String? // URL do playback
+  bibleVerse     String?  // Versículo relacionado
+  duration       Int?     // Duração em segundos
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relacionamentos
+  scaleSongs    ScaleSong[]
+  playlistSongs PlaylistSong[]
+  favorites     UserFavorite[]
+
+  @@map("songs")
+}
+
+model Scale {
+  id          String        @id @default(cuid())
+  date        DateTime
+  serviceType ServiceType
+  status      ScaleStatus   @default(DRAFT)
+  notes       String?
+  createdById String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relacionamentos
+  createdBy    User               @relation("ScaleCreator", fields: [createdById], references: [id])
+  participants ScaleParticipant[]
+  songs        ScaleSong[]
+
+  @@map("scales")
+}
+
+model ScaleParticipant {
+  id                 String            @id @default(cuid())
+  scaleId            String
+  userId             String
+  instrument         String
+  confirmationStatus ConfirmationStatus @default(PENDING)
+  notes              String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  // Relacionamentos
+  scale Scale @relation(fields: [scaleId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([scaleId, userId, instrument])
+  @@map("scale_participants")
+}
+
+model ScaleSong {
+  id      String @id @default(cuid())
+  scaleId String
+  songId  String
+  order   Int    // Ordem da música na escala
+  key     String // Tom que será tocado (pode ser diferente do original)
+  notes   String?
+
+  // Relacionamentos
+  scale Scale @relation(fields: [scaleId], references: [id], onDelete: Cascade)
+  song  Song  @relation(fields: [songId], references: [id], onDelete: Cascade)
+
+  @@unique([scaleId, songId])
+  @@map("scale_songs")
+}
+
+model Playlist {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  songs PlaylistSong[]
+
+  @@map("playlists")
+}
+
+model PlaylistSong {
+  id         String @id @default(cuid())
+  playlistId String
+  songId     String
+  order      Int    // Ordem da música na playlist
+
+  // Relacionamentos
+  playlist Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  song     Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
+
+  @@unique([playlistId, songId])
+  @@map("playlist_songs")
+}
+
+model AudioFile {
+  id          String   @id @default(cuid())
+  filename    String
+  originalName String
+  mimetype    String
+  size        Int      // Tamanho em bytes
+  url         String   // URL no Supabase Storage
+  bucketName  String   // Nome do bucket no Supabase
+  category    String?  // Categoria do arquivo (song, backing_track, recording, etc)
+  createdAt   DateTime @default(now())
+
+  @@map("audio_files")
+}
+
+model UserFavorite {
+  id     String @id @default(cuid())
+  userId String
+  songId String
+
+  // Relacionamentos
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  song Song @relation(fields: [songId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, songId])
+  @@map("user_favorites")
+}

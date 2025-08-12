@@ -3,22 +3,47 @@ export const APP_NAME = 'IMP Connect';
 export const APP_VERSION = '1.0.0';
 export const CHURCH_NAME = 'Igreja Metodista em Pantanal';
 
-// Cores do tema
+// Cores do tema - Metodista Moderno
 export const COLORS = {
-  primary: '#3B82F6',
-  secondary: '#10B981',
-  accent: '#F59E0B',
-  background: '#F9FAFB',
-  surface: '#FFFFFF',
-  text: {
-    primary: '#111827',
-    secondary: '#6B7280',
-    light: '#9CA3AF',
+  // Cores principais
+  primary: '#1a1a1a',        // Preto mais suave
+  secondary: '#FFFFFF',       // Branco
+  
+  // Cores secundárias  
+  accent: '#E53E3E',         // Vermelho vibrante
+  gray: '#718096',           // Cinza moderno
+  
+  // Backgrounds modernos
+  background: '#FAFAFA',     // Off-white
+  backgroundDark: '#121212', // Dark mode
+  surface: '#FFFFFF',        // Cards
+  surfaceElevated: '#FFFFFF', // Cards elevados
+  
+  // Gradientes
+  gradients: {
+    primary: ['#1a1a1a', '#2D3748'],
+    accent: ['#E53E3E', '#C53030'],
+    card: ['#FFFFFF', '#F7FAFC'],
   },
-  error: '#EF4444',
-  warning: '#F59E0B',
-  success: '#10B981',
-  info: '#3B82F6',
+  
+  // Borders e shadows
+  border: '#E2E8F0',
+  shadow: 'rgba(0, 0, 0, 0.1)',
+  shadowDark: 'rgba(0, 0, 0, 0.3)',
+  
+  text: {
+    primary: '#1a1a1a',      // Texto principal
+    secondary: '#718096',     // Texto secundário
+    muted: '#A0AEC0',        // Texto desbotado
+    inverse: '#FFFFFF',      // Texto em fundo escuro
+    accent: '#E53E3E',       // Texto de destaque
+  },
+  
+  // Estados
+  error: '#E53E3E',
+  warning: '#ED8936',
+  success: '#38A169',
+  info: '#3182CE',
 };
 
 // Instrumentos disponíveis

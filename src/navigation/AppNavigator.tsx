@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { COLORS } from '../constants';
 
 // Importar ícones quando necessário
 // import { Ionicons } from '@expo/vector-icons';
@@ -38,12 +39,27 @@ function TabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: '#3B82F6',
-        tabBarInactiveTintColor: '#9CA3AF',
+        tabBarActiveTintColor: COLORS.accent,
+        tabBarInactiveTintColor: COLORS.text.muted,
         tabBarStyle: {
-          backgroundColor: '#FFFFFF',
-          borderTopWidth: 1,
-          borderTopColor: '#E5E7EB',
+          backgroundColor: COLORS.surface,
+          borderTopWidth: 0,
+          paddingTop: 8,
+          paddingBottom: 8,
+          height: 85,
+          shadowColor: COLORS.shadowDark,
+          shadowOffset: { width: 0, height: -4 },
+          shadowOpacity: 0.1,
+          shadowRadius: 8,
+          elevation: 10,
+        },
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: '600',
+          marginTop: 4,
+        },
+        tabBarIconStyle: {
+          marginTop: 4,
         },
       }}
     >

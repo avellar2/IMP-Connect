@@ -1,18 +1,19 @@
 import React from 'react';
-import { View, Text, SafeAreaView } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
+import { COLORS } from '../constants';
 
 export default function SongsScreen() {
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
-      <View className="p-4">
-        <Text className="text-2xl font-bold text-gray-800 mb-4">
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
+        <Text style={styles.title}>
           Músicas
         </Text>
-        <View className="bg-white rounded-lg p-4 shadow-sm">
-          <Text className="text-gray-600 text-center">
+        <View style={styles.card}>
+          <Text style={styles.text}>
             Tela de músicas em desenvolvimento...
           </Text>
-          <Text className="text-gray-500 text-center mt-2">
+          <Text style={styles.subtext}>
             Aqui ficará o repertório completo com cifras, tons e áudios
           </Text>
         </View>
@@ -20,3 +21,40 @@ export default function SongsScreen() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+  },
+  content: {
+    padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: COLORS.text.primary,
+    marginBottom: 16,
+  },
+  card: {
+    backgroundColor: COLORS.surface,
+    borderRadius: 8,
+    padding: 16,
+    elevation: 1,
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  text: {
+    color: COLORS.text.secondary,
+    textAlign: 'center',
+  },
+  subtext: {
+    color: COLORS.text.light,
+    textAlign: 'center',
+    marginTop: 8,
+  },
+});
