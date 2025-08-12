@@ -7,7 +7,11 @@ module.exports = {
     "./screens/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      width: {
+        '48-percent': '48%',
+      }
+    },
   },
   plugins: [],
 }
